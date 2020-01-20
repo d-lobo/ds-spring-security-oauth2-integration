@@ -1,0 +1,3 @@
+auth0:
+  issuer: https://dev-6pja0p1r.eu.auth0.com/
+  audience: https://backend.demo-showcase.lobo.de
