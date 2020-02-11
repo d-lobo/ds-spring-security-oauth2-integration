@@ -1,6 +1,6 @@
 package de.lobo.spring.security.service;
 
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,18 +10,16 @@ public class DemoService {
     return "You successfully accessed a public resource";
   }
 
-  //TODO: implement mapping of auth0-scopes to spring-security-roles
- // @Secured("ROLE_USER")
   public String accessUserResource() {
     return "You successfully accessed a user resource";
   }
-  //TODO: implement mapping of auth0-scopes to spring-security-roles
- // @Secured("ROLE_PRIVILEGED")
+
+  @PreAuthorize("hasAnyAuthority('privileged','admin')")
   public String accessPrivilegedResource() {
     return "You successfully accessed a privileged resource";
   }
-  //TODO: implement mapping of auth0-scopes to spring-security-roles
- // @Secured("ROLE_ADMIN")
+
+  @PreAuthorize("hasAuthority('admin')")
   public String accessAdminResource() {
     return "You successfully accessed a admin resource";
   }

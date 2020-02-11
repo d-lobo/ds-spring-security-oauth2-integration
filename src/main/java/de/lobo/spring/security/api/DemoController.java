@@ -16,7 +16,7 @@ public class DemoController {
     return ResponseEntity.ok(demoService.accessPublicResource());
   }
 
-  @GetMapping("/users")
+  @GetMapping("/user")
   public ResponseEntity getUserResource() {
     return ResponseEntity.ok(demoService.accessUserResource());
   }

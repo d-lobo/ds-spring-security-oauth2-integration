@@ -17,7 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
   static final String PRIVILEGED_API = "/privileged";
-  static final String USER_API = "/users";
+  static final String USER_API = "/user";
   static final String ADMIN_API = "/admin";
 
   @Value("${auth0.audience}")
@@ -44,14 +44,15 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST, USER_API).authenticated()
         .antMatchers(HttpMethod.PUT, USER_API).authenticated()
         .antMatchers(HttpMethod.DELETE, USER_API).authenticated()
-        .antMatchers(HttpMethod.GET, PRIVILEGED_API).authenticated()
-        .antMatchers(HttpMethod.POST, PRIVILEGED_API).authenticated()
-        .antMatchers(HttpMethod.PUT, PRIVILEGED_API).authenticated()
-        .antMatchers(HttpMethod.DELETE, PRIVILEGED_API).authenticated()
-        .antMatchers(HttpMethod.GET, ADMIN_API).authenticated()
-        .antMatchers(HttpMethod.POST, ADMIN_API).authenticated()
-        .antMatchers(HttpMethod.PUT, ADMIN_API).authenticated()
-        .antMatchers(HttpMethod.DELETE, ADMIN_API).authenticated();
+         //assume JWT permissions are interpreted roles
+        .antMatchers(HttpMethod.GET, PRIVILEGED_API).hasAnyAuthority("privileged", "admin")
+        .antMatchers(HttpMethod.POST, PRIVILEGED_API).hasAnyAuthority("privileged", "admin")
+        .antMatchers(HttpMethod.PUT, PRIVILEGED_API).hasAnyAuthority("privileged", "admin")
+        .antMatchers(HttpMethod.DELETE, PRIVILEGED_API).hasAnyAuthority("privileged", "admin")
+        .antMatchers(HttpMethod.GET, ADMIN_API).hasAuthority("admin")
+        .antMatchers(HttpMethod.POST, ADMIN_API).hasAuthority("admin")
+        .antMatchers(HttpMethod.PUT, ADMIN_API).hasAuthority("admin")
+        .antMatchers(HttpMethod.DELETE, ADMIN_API).hasAuthority("admin");
   }
 
   @Override
